@@ -1,12 +1,10 @@
 ﻿### Main Function, only used to call Get-HeaderInfo ###
 function Get-VxRailSystemInfo{
 param(
-    [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
-    [string]$hostname
+    [Parameter(Mandatory=$true,ValueFromPipeline=$true)][string]$hostname
 )
    
     Get-HeaderInfo -hostname $hostname
-
 }
 
 ### Ignore soft/self-signed certs, can be used alone ###
