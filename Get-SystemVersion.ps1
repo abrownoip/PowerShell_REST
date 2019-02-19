@@ -1,7 +1,9 @@
-﻿function Get-VxRailSystemInfo{
+﻿### Main Function, only used to call Get-HeaderInfo ###
+ function Get-VxRailSystemInfo{
     Get-HeaderInfo
 }
 
+### Ignore soft/self-signed certs, can be used alone ###
 function Ignore-SelfSignedCerts{
     try{
         Add-Type -TypeDefinition  @"
@@ -21,6 +23,7 @@ function Ignore-SelfSignedCerts{
     [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
 }
 
+### Gets user credentials then encodes them to base64 for HTTP request ###
 function Get-HeaderInfo {
     Ignore-SelfSignedCerts
     $cred = Get-Credential
@@ -28,6 +31,7 @@ function Get-HeaderInfo {
     Get-SystemInfo -Headers $Headers
 }
 
+### REST Get request to VxRail Manager using provided encoded login credentials ###
 function Get-SystemInfo {
     param(
         [Parameter(Mandatory=$true, ValueFromPipeline=$true, ValueFromPipelineByPropertyName=$true)]
@@ -42,6 +46,7 @@ function Get-SystemInfo {
     }
 }
 
+### Takes information sent from Get-SystemInfo and outputs only specified info ###
 function Print-SystemInfo {
     param(
         [Parameter(Mandatory=$true,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)]
@@ -54,18 +59,3 @@ function Print-SystemInfo {
     write-host "Installed Components"
     $systemInfo.installed_components | select name, current_version, upgrade_status
 }
-
-
-
-### ERROR TESTING ###
-<#
-try{
-    $vxrailSystemInfo = Invoke-RestMethod -Method Get -Uri "https://10.10.187.27/rest/vxm/v1/system" #-Headers $Headers
-}
-catch [System.Net.WebException]{
-    "Error : System.Net.WebException"
-}
-finally {
-    "Prompting for Login Credentials"
-}
-#>
