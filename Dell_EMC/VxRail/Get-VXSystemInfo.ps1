@@ -44,10 +44,12 @@ function Get-VXSystemInfo {
             $ErrorActionPreference = 'Stop'
             Invoke-RestMethod -Method Get -Uri "https://$HostName/rest/vxm/v1/system" -Headers $Headers | ForEach-Object {
                [PSCustomObject]@{
+                  PSTypeName          = 'VXRail.SystemInfo'
                   HostName            = $HostName
                   Health              = $PSItem.Health
                   InstalledComponents = $PSItem.Installed_Components | ForEach-Object {
                      [PSCustomObject]@{
+                        PSTypeName     = 'VXRail.SystemInfo.InstalledComponents'
                         Name           = $PSItem.Name
                         CurrentVersion = $PSItem.Current_Version
                         UpgradeStatus  = $PSItem.Upgrade_Status
