@@ -18,8 +18,8 @@ function Get-KbArticles {
         $HostName,
         
         #Credentials to connect with
-        [Parameter(Mandatory = $True)
-        $Credential
+        [Parameter(Mandatory = $True)]
+        $Credential = (Get-Credential)
     )
     begin {
         $CallerErrorPreference = $ErrorActionPreference
@@ -44,4 +44,5 @@ function Get-KbArticles {
          Write-Error -ErrorRecord $PsItem -ErrorAction $CallerErrorPreference
    }
    end {}
+    }
 }
