@@ -6,7 +6,7 @@ function Unblock-SelfSignedCerts {
     process {
         try {
             $ErrorActionPreference = 'Stop'
-            Add-Type -TypeDefinition  @(
+            $TypeDefinition = @(
                 "using System.Net;"
                 "using System.Security.Cryptography.X509Certificates;"
                 "public class TrustAllCertsPolicy : ICertificatePolicy {"
@@ -16,7 +16,8 @@ function Unblock-SelfSignedCerts {
                 "         return true;"
                 "    }"
                 "}"
-            )
+            ) -join "`n"
+            Add-Type -TypeDefinition $TypeDefinition
           }
         catch {
             Write-Error -ErrorRecord $PSItem -ErrorAction $CallerErrorPreference
