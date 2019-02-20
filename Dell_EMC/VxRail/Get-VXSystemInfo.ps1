@@ -14,7 +14,7 @@ function Get-VXSystemInfo {
         # System to Connect to
         [Parameter(Mandatory = $True,
                    ValueFromPipeline = $True,
-                   Position=0)]
+                   Position = 0)]
         [Alias('Url')]
         $HostName,
 
