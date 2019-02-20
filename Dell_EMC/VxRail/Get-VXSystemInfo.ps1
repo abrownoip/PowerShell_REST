@@ -42,12 +42,13 @@ function Get-VXSystemInfo {
     process {
         try {
             $ErrorActionPreference = 'Stop'
-            $VXRailSystemInfo = Invoke-RestMethod -Method Get -Uri "https://$HostName/rest/vxm/v1/system" -Headers $Headers
-            [PSCustomObject]@{
-                Name = $VXRailSystemInfo.Installed_Components.Name
-                Health = $VXRailSystemInfo.Health
-                CurrentVersion = $VXRailSystemInfo.Installed_Components.Current_Version
-                UpgradeStatus = $VXRailSystemInfo.Installed_Components.Upgrade_Status
+            Invoke-RestMethod -Method Get -Uri "https://$HostName/rest/vxm/v1/system" -Headers $Headers | ForEach-Object {
+               [PSCustomObject]@{
+                  Name = $PSItem.Installed_Components.Name
+                  Health = $PSItem.Health
+                  CurrentVersion = $PSItem.Installed_Components.Current_Version
+                  UpgradeStatus = $PSItem.Installed_Components.Upgrade_Status
+               }
             }
         } catch {
             Write-Error -ErrorRecord $PSItem -ErrorAction $CallerErrorPreference
