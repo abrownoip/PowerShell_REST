@@ -1,3 +1,4 @@
+
 <#
 .Synopsis
    Short description
@@ -10,7 +11,6 @@
 #>
 function Get-VXSystemInfo {
     [CmdletBinding()]
-    [Alias()]
     param (
         # System to Connect to
         [Parameter(Mandatory = $True,
@@ -20,6 +20,7 @@ function Get-VXSystemInfo {
         $HostName,
 
         # Credentials to access system
+        [Parameter(Mandatory = $True)]
         [PSCredential]
         $Credential = (Get-Credential)
     )
@@ -44,10 +45,10 @@ function Get-VXSystemInfo {
             $ErrorActionPreference = 'Stop'
             $VXRailSystemInfo = Invoke-RestMethod -Method Get -Uri "https://$HostName/rest/vxm/v1/system" -Headers $Headers
             [PSCustomObject]@{
-                Name = $SystemInfo.Installed_Components.Name
-                Health = $SystemInfo.Health
-                CurrentVersion = $SystemInfo.Installed_Components.Current_Version
-                UpgradeStatus = $SystemInfo.Installed_Components.Upgrade_Status
+                Name = $VXRailSystemInfo.Installed_Components.Name
+                Health = $VXRailSystemInfo.Health
+                CurrentVersion = $VXRailSystemInfo.Installed_Components.Current_Version
+                UpgradeStatus = $VXRailSystemInfo.Installed_Components.Upgrade_Status
             }
         } catch {
             Write-Error -ErrorRecord $PSItem -ErrorAction $CallerErrorPreference
