@@ -15,7 +15,7 @@ function Get-VXSystemInfo {
         [Parameter(Mandatory = $True,
                    ValueFromPipeline = $True,
                    Position = 0)]
-        [Alias('Url')]
+        [Alias('IPAddress')]
         $HostName,
 
         # Credentials to access system
